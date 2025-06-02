@@ -1,0 +1,135 @@
+<!-- Header & Button Row -->
+<!-- Header & Button Container -->
+<div class="header-container">
+  <h1 class="header-text">🎓 Student Registration System</h1>
+  <div class="header-controls">
+    <button mat-raised-button color="primary" (click)="onAddStudent()">
+      Add Student
+    </button>
+
+    <mat-form-field appearance="outline">
+      <input matInput placeholder="Search..." (keyup)="applyFilter($event)" />
+    </mat-form-field>
+  </div>
+</div>
+
+<!-- Main Content Area -->
+<div class="content-container">
+  <!-- Left Side - Table -->
+  <div class="left-panel">
+    <div class="table-container">
+      <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+
+  <!-- First Name Column -->
+  <ng-container matColumnDef="firstName">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>First Name</th>
+    <td mat-cell *matCellDef="let user; let i = index" [ngClass]="{ 'selected-row': i === selectedIndex }">
+      {{ user.firstName }}
+    </td>
+  </ng-container>
+
+  <!-- Last Name Column -->
+  <ng-container matColumnDef="lastName">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Last Name</th>
+    <td mat-cell *matCellDef="let user; let i = index" [ngClass]="{ 'selected-row': i === selectedIndex }">
+      {{ user.lastName }}
+    </td>
+  </ng-container>
+
+  <!-- Mobile Column -->
+  <ng-container matColumnDef="mobile">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Mobile</th>
+    <td mat-cell *matCellDef="let user; let i = index" [ngClass]="{ 'selected-row': i === selectedIndex }">
+      {{ user.mobile }}
+    </td>
+  </ng-container>
+
+  <!-- Email Column -->
+  <ng-container matColumnDef="email">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Email</th>
+    <td mat-cell *matCellDef="let user; let i = index" [ngClass]="{ 'selected-row': i === selectedIndex }">
+      {{ user.email }}
+    </td>
+  </ng-container>
+
+  <!-- NIC Column -->
+  <ng-container matColumnDef="nic">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>NIC</th>
+    <td mat-cell *matCellDef="let user; let i = index" [ngClass]="{ 'selected-row': i === selectedIndex }">
+      {{ user.nic }}
+    </td>
+  </ng-container>
+    <ng-container matColumnDef="actions">
+  <th mat-header-cell *matHeaderCellDef>Actions</th>
+  <td mat-cell *matCellDef="let user; let i = index" class="action-buttons-cell">
+    <div class="button-group">
+      <button mat-icon-button color="primary" (click)="$event.stopPropagation(); onUpdate(user)">
+        <mat-icon>edit</mat-icon>
+      </button>
+      <button mat-icon-button color="warn" (click)="$event.stopPropagation(); onDelete(user)">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </div>
+  </td>
+</ng-container>
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row
+      *matRowDef="let user; let i = index; columns: displayedColumns;"
+      [ngClass]="{ 'selected-row': i === selectedIndex }"
+      (click)="onRowClicked(user, i)">
+  </tr>
+</table>
+      <div class="paginator-wrapper">
+  <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+</div>
+    </div>
+  </div>
+
+  <!-- Right Side - Detail View -->
+<div class="right-panel">
+  <div class="detail-container" *ngIf="selectedUser; else noSelection">
+    <h3>User Details</h3>
+
+    <!-- Profile Image -->
+    <div class="profile-image-container">
+      <img *ngIf="selectedUser?.imageUrl" [src]="selectedUser.imageUrl" alt="Profile">
+      <div *ngIf="!selectedUser?.imageUrl" class="placeholder-circle">No Image</div>
+    </div>
+
+    <!-- Detail Rows -->
+    <div class="detail-row">
+      <span class="label">First Name</span>: <span class="value">{{ selectedUser.firstName }}</span>
+    </div>
+
+    <div class="detail-row">
+      <span class="label">Last Name</span>: <span class="value">{{ selectedUser.lastName }}</span>
+    </div>
+
+    <div class="detail-row">
+      <span class="label">Mobile</span>: <span class="value">{{ selectedUser.mobile }}</span>
+    </div>
+
+    <div class="detail-row">
+      <span class="label">Email</span>: <span class="value">{{ selectedUser.email }}</span>
+    </div>
+
+    <div class="detail-row">
+      <span class="label">NIC</span>: <span class="value">{{ selectedUser.nic }}</span>
+    </div>
+
+    <div class="detail-row">
+      <span class="label">Date of Birth</span>: <span class="value">{{ selectedUser.dateOfBirth | date }}</span>
+    </div>
+
+    <div class="detail-row">
+      <span class="label">Address</span>: <span class="value">{{ selectedUser.address }}</span>
+    </div>
+  </div>
+
+  <ng-template #noSelection>
+    <div class="placeholder">
+      Click a row to view details.
+    </div>
+  </ng-template>
+</div>
+</div>

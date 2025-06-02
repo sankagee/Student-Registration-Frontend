@@ -1,0 +1,104 @@
+<div class="dialog-container">
+  <!-- Close Button -->
+  <button mat-icon-button class="close-btn" (click)="dialogRef.close()">
+    <mat-icon>close</mat-icon>
+  </button>
+
+  <h2 mat-dialog-title>{{ isAddMode ? 'Add New Student' : 'Update Student Details' }}</h2>
+
+  <!-- Scrollable Content -->
+
+
+    <form [formGroup]="studentForm" (ngSubmit)="onSubmit()" class="student-form">
+
+      <!-- Image Upload Section -->
+      <div class="image-upload-section">
+        <div class="image-preview-container">
+          <div class="image-preview">
+            <img *ngIf="imagePreview" [src]="imagePreview" alt="Profile Preview">
+            <p *ngIf="!imagePreview">No image selected</p>
+          </div>
+
+          <label class="upload-button">
+            <input type="file" (change)="onFileSelected($event)" accept="image/*">
+            Select Image
+          </label>
+        </div>
+      </div>
+
+      <!-- Form Fields -->
+      <div class="form-fields">
+        <!-- First Name & Last Name in one row -->
+        <div class="row">
+          <mat-form-field appearance="outline" class="flex">
+            <mat-label>First Name</mat-label>
+            <input matInput formControlName="firstName" required>
+            <mat-error *ngIf="studentForm.get('firstName')?.hasError('required')">First name is required</mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="flex">
+            <mat-label>Last Name</mat-label>
+            <input matInput formControlName="lastName" required>
+            <mat-error *ngIf="studentForm.get('lastName')?.hasError('required')">Last name is required</mat-error>
+          </mat-form-field>
+        </div>
+
+        <!-- Mobile & Email Row -->
+        <div class="row">
+          <mat-form-field appearance="outline" class="flex">
+            <mat-label>Mobile</mat-label>
+            <input matInput appNumericInput formControlName="mobile" required>
+            <mat-error *ngIf="studentForm.get('mobile')?.hasError('required')">Mobile is required</mat-error>
+            <mat-error *ngIf="studentForm.get('mobile')?.hasError('pattern')">
+              Mobile must be exactly 10 digits
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="flex">
+            <mat-label>Email</mat-label>
+            <input matInput type="email" formControlName="email" required>
+            <mat-error *ngIf="studentForm.get('email')?.hasError('required')">Email is required</mat-error>
+            <mat-error *ngIf="studentForm.get('email')?.hasError('email')">Invalid email format</mat-error>
+          </mat-form-field>
+        </div>
+
+        <!-- NIC & DOB Row -->
+        <div class="row">
+          <mat-form-field appearance="outline" class="flex">
+            <mat-label>NIC</mat-label>
+            <input matInput formControlName="nic" required>
+            <mat-error *ngIf="studentForm.get('nic')?.hasError('required')">NIC is required</mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="flex">
+            <mat-label>Date of Birth</mat-label>
+            <input matInput [matDatepicker]="picker" formControlName="dateOfBirth" [max]="yesterday">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+              <mat-error *ngIf="studentForm.get('dateOfBirth')?.hasError('required')">Date of birth is required</mat-error>
+          </mat-form-field>
+        </div>
+
+        <!-- Address -->
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Address</mat-label>
+          <textarea matInput formControlName="address" rows="3"></textarea>
+          <mat-error *ngIf="studentForm.get('address')?.hasError('required')">Address is required</mat-error>
+        </mat-form-field>
+
+      </div>
+
+      <!-- Dialog Actions (Buttons) -->
+      <mat-dialog-actions align="end" class="actions-footer">
+        <button mat-button type="button" mat-dialog-close>Cancel</button>
+        <button mat-raised-button color="primary" type="submit"
+                [disabled]="studentForm.invalid || !isFormDirty() || loading"
+                [class.mat-progress-spinner-hidden]="!loading">
+          <mat-spinner *ngIf="loading" diameter="20"></mat-spinner>
+          <span *ngIf="!loading">{{ isAddMode ? 'Add Student' : 'Update Student' }}</span>
+        </button>
+      </mat-dialog-actions>
+
+    </form>
+ 
+</div>
