@@ -11,7 +11,7 @@ A modern browser
 ## 2. Setting Up the Frontend (Angular)
 ## Step 1: 
 
-[Clone the Repository]((https://github.com/sankagee/Student-Registration-Frontend.git))
+[Clone the Repository]([https://github.com/sankagee/Student-Registration-Frontend.git])
 
 ## Step 2: Install Dependencies : 
 
